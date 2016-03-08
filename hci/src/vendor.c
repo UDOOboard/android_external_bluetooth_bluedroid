@@ -83,7 +83,12 @@ static const char *get_vendor_lib() {
 bool vendor_open(const uint8_t *local_bdaddr) {
   assert(lib_handle == NULL);
 
+#if defined(BOARD_HAVE_BLUETOOTH_BCM) || defined (BOARD_USE_AR3K_BLUETOOTH)
   lib_handle = dlopen(get_vendor_lib(), RTLD_NOW);
+#else
+  lib_handle = dlopen(VENDOR_LIBRARY_NAME, RTLD_NOW);
+#endif
+
   if (!lib_handle) {
     ALOGE("%s unable to open %s: %s", __func__, VENDOR_LIBRARY_NAME, dlerror());
     goto error;
