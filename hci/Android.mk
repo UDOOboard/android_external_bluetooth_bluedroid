@@ -23,11 +23,44 @@ LOCAL_SRC_FILES += \
 	src/userial_mct.c
 
 else
+
+ifeq ($(BLUETOOTH_HCI_USE_USB),true)
+
+LOCAL_CFLAGS += -DHCI_H2
+
+LOCAL_SRC_FILES += \
+	  src/hci_h4.c \
+	  src/usb.c
+
+LOCAL_C_INCLUDES += \
+	  $(LOCAL_PATH)/include \
+	  $(LOCAL_PATH)/../utils/include \
+	  external/libusb_aah
+
+LOCAL_SHARED_LIBRARIES := \
+	  libcutils \
+	  libdl \
+	  liblog \
+	  libusb
+
+LOCAL_STAITC_LIBRARIES := \
+	  libbt-utils
+
+LOCAL_LDLIBS := -lusb
+else
+
 LOCAL_SRC_FILES += \
 	src/hci_h4.c \
 	src/userial.c
+
 endif
 
+endif
+
+ifeq ($(BOARD_HAVE_BLUETOOTH_USB),true)
+LOCAL_CFLAGS += \
+	-DBOARD_HAVE_BLUETOOTH_USB
+endif
 LOCAL_CFLAGS += -std=c99
 
 LOCAL_C_INCLUDES += \

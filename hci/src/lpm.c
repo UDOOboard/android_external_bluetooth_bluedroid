@@ -250,7 +250,9 @@ void lpm_vnd_cback(uint8_t vnd_result)
 void lpm_init(void)
 {
     memset(&bt_lpm_cb, 0, sizeof(bt_lpm_cb_t));
+#ifdef BLPM_VND_INCLUDED
     vendor_send_command(BT_VND_OP_GET_LPM_IDLE_TIMEOUT, &bt_lpm_cb.timeout_ms);
+#endif
 }
 
 /*******************************************************************************
@@ -302,7 +304,9 @@ void lpm_enable(uint8_t turn_on)
 
     uint8_t lpm_cmd = (turn_on) ? BT_VND_LPM_ENABLE : BT_VND_LPM_DISABLE;
     bt_lpm_cb.state = (turn_on) ? LPM_ENABLING : LPM_DISABLING;
+#ifdef BLPM_VND_INCLUDED
     vendor_send_command(BT_VND_OP_LPM_SET_MODE, &lpm_cmd);
+#endif
 }
 
 /*******************************************************************************
@@ -350,7 +354,9 @@ void lpm_wake_assert(void)
 
         /* Calling vendor-specific part */
         uint8_t state = BT_VND_LPM_WAKE_ASSERT;
+#ifdef BLPM_VND_INCLUDED
         vendor_send_command(BT_VND_OP_LPM_WAKE_SET_STATE, &state);
+#endif
 
         lpm_stop_transport_idle_timer();
 
@@ -402,7 +408,9 @@ void lpm_wake_deassert(void)
         BTLPMDBG("LPM WAKE deassert");
 
         uint8_t state = BT_VND_LPM_WAKE_DEASSERT;
+#ifdef BLPM_VND_INCLUDED
         vendor_send_command(BT_VND_OP_LPM_WAKE_SET_STATE, &state);
+#endif
         bt_lpm_cb.wake_state = LPM_WAKE_DEASSERTED;
     }
 }

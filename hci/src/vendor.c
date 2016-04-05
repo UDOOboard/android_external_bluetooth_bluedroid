@@ -33,6 +33,7 @@ extern bool fwcfg_acked;
 void lpm_vnd_cback(uint8_t vnd_result);
 
 static const char *VENDOR_LIBRARY_NAME = "libbt-vendor.so";
+static const char *VENDOR_LIBRARY_NAME_USB = "libbt-vendor-usb.so";
 static const char *VENDOR_LIBRARY_NAME_BCM = "libbt-vendor-broadcom.so";
 static const char *VENDOR_LIBRARY_NAME_AR3K = "libbt-vendor-ar3k.so";
 static char *VENDOR_LIB_PROP_NAME = "ro.boot.btdev";
@@ -85,6 +86,8 @@ bool vendor_open(const uint8_t *local_bdaddr) {
 
 #if defined(BOARD_HAVE_BLUETOOTH_BCM) || defined (BOARD_USE_AR3K_BLUETOOTH)
   lib_handle = dlopen(get_vendor_lib(), RTLD_NOW);
+#elif defined(BOARD_HAVE_BLUETOOTH_USB)
+  lib_handle = dlopen(VENDOR_LIBRARY_NAME_USB, RTLD_NOW);
 #else
   lib_handle = dlopen(VENDOR_LIBRARY_NAME, RTLD_NOW);
 #endif

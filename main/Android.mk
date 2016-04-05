@@ -120,6 +120,7 @@ LOCAL_SHARED_LIBRARIES := \
 	libcutils \
 	libdl \
 	liblog \
+	libusb \
 	libpower
 
 LOCAL_STATIC_LIBRARIES := \

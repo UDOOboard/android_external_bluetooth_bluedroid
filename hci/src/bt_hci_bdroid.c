@@ -452,6 +452,11 @@ static int tx_hc_cmd(TRANSAC transac, char *p_buf, int len) {
   return BT_HC_STATUS_SUCCESS;
 }
 
+#ifdef HCI_H2
+void userial_close_reader(void) {
+	return;
+}
+#endif
 // Closes the interface.
 // This routine is not thread safe.
 static void cleanup(void)
